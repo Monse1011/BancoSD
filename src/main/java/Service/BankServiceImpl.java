@@ -18,11 +18,11 @@ public class BankServiceImpl implements BankService {
 
     public synchronized String createAccount(String id, String owner, double initialBalance) {
         if (accounts.stream().anyMatch(acc -> acc.getId().equals(id))) {
-            return "Error: Account already exists";
+            return "Error: Ya existe una cuenta con ese ID";
         }
         accounts.add(new Account(id, owner, initialBalance));
         System.out.println("Account created for " + owner + " with id " + id) ;
-        return "Account created successfully";
+        return "Cuenta creada exitosamente";
     }
 
     @Override
@@ -31,7 +31,7 @@ public class BankServiceImpl implements BankService {
         acc.setBalance(acc.getBalance() + amount);
         System.out.println("Deposit: " + amount);
 
-        return "Deposited successfully";
+        return "Deposito exitoso";
     }
 
     @Override
@@ -39,25 +39,24 @@ public class BankServiceImpl implements BankService {
         Account acc = findAccount(id);
 
         if (acc.getBalance() < amount) {
-            throw new RuntimeException("Insufficient funds");
+            throw new RuntimeException("Fondos insuficientes");
         }
 
         acc.setBalance(acc.getBalance() - amount);
-        return "Withdrawn successfully";
+        return "Retiro exitoso";
     }
 
     @Override
     public synchronized double getBalance(String id) {
         return findAccount(id).getBalance();
-
     }
 
     @Override
     public synchronized String transfer(String fromId, String toId, double amount) {
         withdraw(fromId, amount);
         deposit(toId, amount);
-        System.out.println("Transfer completed");
+        System.out.println("Transferencia completada");
 
-        return "Transfer successfully";
+        return "Transferencia exitosa";
     }
 }
